@@ -28,28 +28,6 @@ public class BoardManager2 : MonoBehaviour
         mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, yCam, mainCamera.transform.position.z);
         prefabs = new GameObject[6]{green, red, blue, yellow, orange, white};        
 
-        /*foreach (Board.Tile[] coordX in board.tile){
-            foreach(Board.Tile coord in coordX){ 
-                GameObject go = GameObject.Instantiate(prefabs[i%6], new Vector3(i, j, 0), Quaternion.identity);
-                board.tile[i][j].tileGameObject = go;
-                j++;
-            }
-            i++;
-            j = 0;
-        }*/
-        /*
-        int i = 0, j = 0;
-        for (int p = 0; p < (2 * y / 3); p++){
-            i = (3 * (p % (x/3))) + 1;  // 0, 
-            j =  (3 * (p % (y/3))) + 1;
-
-            for (int k = -1; k < 2; k++){
-                for (int l = -1; l < 2; l++){
-                    GameObject gi = GameObject.Instantiate(prefabs[p], new Vector3(i + l, j + k, 0), Quaternion.identity);
-                    board.tile[i + l][j + k].tileGameObject = gi;  
-                }      
-            }
-        }*/
         int p = 0;
         for (int i = 1; i < y; i+= 3){
             for (int j = 1; j < x; j+=3){
