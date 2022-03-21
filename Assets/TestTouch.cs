@@ -63,7 +63,7 @@ public class TestTouch : MonoBehaviour
             int dif = isHorizontal? (int) (Utils.RoundVector2(startPosition).x - Utils.RoundVector2(inputManager.PrimaryPosition()).x) :
                                     (int) (Utils.RoundVector2(startPosition).y - Utils.RoundVector2(inputManager.PrimaryPosition()).y);
             for (int i = 0; i < System.Math.Abs(dif); i++){
-                BoardManager.MoveObjects(isHorizontal, chosenVector, System.Math.Sign(dif));
+                BoardManager2.MoveObjects(isHorizontal, chosenVector, System.Math.Sign(dif));
             }
             startPosition = inputManager.PrimaryPosition();
             yield return null;

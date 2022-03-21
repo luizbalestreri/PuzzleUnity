@@ -72,7 +72,8 @@ public class BoardManager : MonoBehaviour
             Board.Tile[] aux = new Board.Tile[lenght];
             for (int k = 0; k < lenght; k++){
                 aux[k] = board.tile[index][k];  
-            }            for (int i = 0; i < lenght; i++){
+            }            
+            for (int i = 0; i < lenght; i++){
                 Board.Tile position = board.tile[index][i];
                 Vector3 pos = aux[i].tileGameObject.transform.position;
                 if (i - sign >= 0 && i - sign < lenght){ //verifica se é de alguma das pontas
