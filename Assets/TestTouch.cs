@@ -44,7 +44,7 @@ public class TestTouch : MonoBehaviour
     }
     private IEnumerator SwipeDirectionCoroutine(){
         while(true){
-            if (System.Math.Abs(startPosition.x - inputManager.PrimaryPosition().x) > 0.5f || System.Math.Abs(startPosition.y - inputManager.PrimaryPosition().y) > 0.5f){
+            if (System.Math.Abs(startPosition.x - inputManager.PrimaryPosition().x) > 0.2f || System.Math.Abs(startPosition.y - inputManager.PrimaryPosition().y) > 0.5f){
                 if (System.Math.Abs(startPosition.x - inputManager.PrimaryPosition().x) > System.Math.Abs(startPosition.y - inputManager.PrimaryPosition().y)){
                     isHorizontal = true;
                     chosenVector = (int) System.Math.Round(inputManager.PrimaryPosition().y);
@@ -60,10 +60,10 @@ public class TestTouch : MonoBehaviour
     }
     private IEnumerator SwipeCoroutine(){
         while(true){
-            int dif = isHorizontal? (int) (Utils.RoundVector2(startPosition).x - Utils.RoundVector2(inputManager.PrimaryPosition()).x) :
-                                    (int) (Utils.RoundVector2(startPosition).y - Utils.RoundVector2(inputManager.PrimaryPosition()).y);
-            for (int i = 0; i < System.Math.Abs(dif); i++){
-                BoardManager2.MoveObjects(isHorizontal, chosenVector, System.Math.Sign(dif));
+            float dif = isHorizontal? (inputManager.PrimaryPosition().x - startPosition.x) :
+                                    (inputManager.PrimaryPosition().y - startPosition.y);
+            for (float i = 0; i < System.Math.Abs(dif); i+=0.5f){
+                BoardManager2.MoveConstraints(isHorizontal, chosenVector, dif);
             }
             startPosition = inputManager.PrimaryPosition();
             yield return null;
