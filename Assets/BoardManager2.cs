@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoardManager2 : MonoBehaviour
 {
     [SerializeField]
-    GameObject green, red, blue, yellow, orange, white, xGameObject;
+    GameObject green, red, blue, yellow, orange, white;
     GameObject[] prefabs;
     public Camera mainCamera;
     public static Board board;
@@ -19,7 +19,7 @@ public class BoardManager2 : MonoBehaviour
 
     }
 
-   void Start(){
+    void Start(){
         x = xSerialized;
         y = ySerialized;
         board = new Board(x, y);
@@ -27,27 +27,18 @@ public class BoardManager2 : MonoBehaviour
         mainCamera = Camera.main;
         mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, yCam, mainCamera.transform.position.z);
         prefabs = new GameObject[6]{green, red, blue, yellow, orange, white};        
-        
+
         int p = 0;
-        for (int i = 1; i < x; i+= 3){
-            GameObject.Instantiate(xGameObject, new Vector3(i, -1, 0), Quaternion.identity);
-            GameObject.Instantiate(xGameObject, new Vector3(i, y, 0), Quaternion.identity);
-            for (int j = 1; j < y; j+=3){
+        for (int i = 1; i < y; i+= 3){
+            for (int j = 1; j < x; j+=3){
                 for (int k = -1; k < 2; k++){
                     for (int l = -1; l < 2; l++){
                         GameObject gi = GameObject.Instantiate(prefabs[p], new Vector3(i + l, j + k, 0), Quaternion.identity);
-                        //if (l == 0 && k == 0) 
-                        gi.transform.localScale = new Vector3(1.1f, 1.1f, 1);
                         board.tile[i + l][j + k].tileGameObject = gi;
                     }        
                 }
                 p++;
             }
-        }
-        for (int i = 1; i < y; i+=3){
-            GameObject.Instantiate(xGameObject, new Vector3(-1, i, 0), Quaternion.identity);
-            GameObject.Instantiate(xGameObject, new Vector3(x, i, 0), Quaternion.identity);
-
         }
         StartCoroutine(Scramble(scrambleTimes));
     }
