@@ -67,15 +67,16 @@ public class BoardManager2 : MonoBehaviour
         for (int i = 0; i < times; i++){
             isHorizontal = isHorizontalArray[Random.Range(0, 2)];
             if (!isHorizontal){
-                MoveObjects(isHorizontal, xIndexArray[Random.Range(0, x)], signArray[Random.Range(0,1)]);
+                MoveConstraints(isHorizontal, xIndexArray[Random.Range(0, x)], signArray[Random.Range(0,1)]);
             } else {
-                MoveObjects(isHorizontal, yIndexArray[Random.Range(0, y)], signArray[Random.Range(0,1)]);
+                MoveConstraints(isHorizontal, yIndexArray[Random.Range(0, y)], signArray[Random.Range(0,1)]);
             }
             yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public static void MoveObjects(bool isHorizontal, int index, int sign){
+    public static void MoveConstraints(bool isHorizontal, int index, float sign){
+        Debug.Log(sign);
         int lenght = isHorizontal? lenght = board.tile[0].Length : lenght = board.tile.Length;
         if (index >= 0 && index < lenght){
             if ((index - 1) % 3 != 0){
@@ -91,7 +92,7 @@ public class BoardManager2 : MonoBehaviour
             }
         }
     }
-    private static void MoveObjectsFacade(bool isHorizontal, int index, int sign){
+    private static void MoveObjectsFacade(bool isHorizontal, int index, float sign){
         int lenght;
         Board.Tile[] aux;
         if (!isHorizontal){
@@ -112,12 +113,12 @@ public class BoardManager2 : MonoBehaviour
         }
     }
     
-     private static void Movement(int i, int sign, int lenght, bool isHorizontal, int index, GameObject aux){
+     private static void Movement(int i, float sign, int lenght, bool isHorizontal, int index, GameObject aux){
         Board.Tile position = board.tile[isHorizontal?i: index][isHorizontal? index: i];
         Vector3 pos = aux.transform.position;
         if (i - sign >= 0 && i - sign < lenght){ //verifica se é de alguma das pontas
             aux.transform.position = isHorizontal? new Vector3(pos.x - (sign), pos.y, pos.z) : new Vector3(pos.x, pos.y - (sign), pos.z);
-            board.tile[isHorizontal?i - (sign): index][isHorizontal? index: i - (sign)].tileGameObject = aux; 
+            board.tile[isHorizontal? (int) (i - (sign)): index][isHorizontal? index: (int)(i - (sign))].tileGameObject = aux; 
         } else {
             if (sign > 0){
                 aux.transform.position = isHorizontal? new Vector3(lenght - 1, pos.y, pos.z) : new Vector3(pos.x, lenght - 1, pos.z);
