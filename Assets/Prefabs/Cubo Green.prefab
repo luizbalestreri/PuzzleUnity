@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6780427044400281878}
   m_Layer: 0
   m_Name: Cubo Green
-  m_TagString: Untagged
+  m_TagString: Green
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

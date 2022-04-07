@@ -22,7 +22,7 @@ public class BoardManager : MonoBehaviour
     void Start(){
         x = xSerialized;
         y = ySerialized;
-        board = new Board(x, y);
+        board = new Board(x + 1, y + 1);
         float yCam = (y - 1)/2;
         mainCamera = Camera.main;
         mainCamera.transform.position = new Vector3(mainCamera.transform.position.x, yCam, mainCamera.transform.position.z);
@@ -32,9 +32,6 @@ public class BoardManager : MonoBehaviour
             foreach(Board.Tile coord in coordX){ 
                 GameObject go = GameObject.Instantiate(prefabs[i%6], new Vector3(i, j, 0), Quaternion.identity);
                 board.tile[i][j].tileGameObject = go;
-                //int number = Random.Range(0,6);
-                //if (GameO)
-                //Board.coord[x][y].objeto = ;
                 j++;
             }
             i++;

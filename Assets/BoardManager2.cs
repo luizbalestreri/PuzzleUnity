@@ -6,6 +6,8 @@ public class BoardManager2 : MonoBehaviour
 {
     [SerializeField]
     GameObject green, red, blue, yellow, orange, white, xGameObject;
+    static GameObject[] before = new GameObject[2];
+    static GameObject[] after = new GameObject[2];
     GameObject[] prefabs;
     public Camera mainCamera;
     public static Board board;
@@ -16,7 +18,6 @@ public class BoardManager2 : MonoBehaviour
     private int xSerialized = 6, ySerialized = 6;                  //don't use for anything else
     
     void Awake(){
-
     }
 
    void Start(){
@@ -67,69 +68,30 @@ public class BoardManager2 : MonoBehaviour
         for (int i = 0; i < times; i++){
             isHorizontal = isHorizontalArray[Random.Range(0, 2)];
             if (!isHorizontal){
-                MoveConstraints(isHorizontal, xIndexArray[Random.Range(0, x)], signArray[Random.Range(0,1)]);
+                //MoveConstraints(isHorizontal, xIndexArray[Random.Range(0, x)], signArray[Random.Range(0,1)]);
             } else {
-                MoveConstraints(isHorizontal, yIndexArray[Random.Range(0, y)], signArray[Random.Range(0,1)]);
+               // MoveConstraints(isHorizontal, yIndexArray[Random.Range(0, y)], signArray[Random.Range(0,1)]);
             }
             yield return new WaitForSeconds(0.1f);
         }
     }
 
-    public static void MoveConstraints(bool isHorizontal, int index, float sign){
-        Debug.Log(sign);
-        int lenght = isHorizontal? lenght = board.tile[0].Length : lenght = board.tile.Length;
-        if (index >= 0 && index < lenght){
-            if ((index - 1) % 3 != 0){
-                if (index == 0 || index == lenght - 1){
-                    MoveObjectsFacade(isHorizontal, 0, sign);
-                    MoveObjectsFacade(isHorizontal, lenght - 1, sign);
-                }
-                else {
-                    if ((index - 2) % 3 != 0) index -= 1;  
-                    MoveObjectsFacade(isHorizontal, index, sign);
-                    MoveObjectsFacade(isHorizontal, index + 1, sign);
-                }
+    public static bool MoveConstraints(bool isHorizontal, int index){
+        int lenght = isHorizontal? lenght = board.tile[0].Length : lenght = board.tile.Length; //tamanho do vetor
+        if (index >= 0 && index < lenght){ //verifica se nao ta arrastando fora do tabuleiro
+            if ((index - 1) % 3 != 0){ //verifica se nao ta arrasando nos bloqueados
+                return true;
             }
+            return false;
         }
-    }
-    private static void MoveObjectsFacade(bool isHorizontal, int index, float sign){
-        int lenght;
-        Board.Tile[] aux;
-        if (!isHorizontal){
-            lenght = board.tile[index].Length;
-            aux = new Board.Tile[lenght];
-        }
-        else {
-            lenght = board.tile.Length;
-            aux = new Board.Tile[lenght];
-        }
-
-        for (int k = 0; k < lenght; k++){
-            aux[k] = board.tile[isHorizontal?k: index][isHorizontal? index: k];  
-        }       
-        
-        for (int i = 0; i < lenght; i++){
-            Movement(i, sign, lenght, isHorizontal, index, aux[i].tileGameObject);
-        }
+        return false;
     }
     
-     private static void Movement(int i, float sign, int lenght, bool isHorizontal, int index, GameObject aux){
-        Board.Tile position = board.tile[isHorizontal?i: index][isHorizontal? index: i];
-        Vector3 pos = aux.transform.position;
-        if (i - sign >= 0 && i - sign < lenght){ //verifica se é de alguma das pontas
-            aux.transform.position = isHorizontal? new Vector3(pos.x - (sign), pos.y, pos.z) : new Vector3(pos.x, pos.y - (sign), pos.z);
-            board.tile[isHorizontal? (int) (i - (sign)): index][isHorizontal? index: (int)(i - (sign))].tileGameObject = aux; 
-        } else {
-            if (sign > 0){
-                aux.transform.position = isHorizontal? new Vector3(lenght - 1, pos.y, pos.z) : new Vector3(pos.x, lenght - 1, pos.z);
-                board.tile[isHorizontal? lenght - 1: index][isHorizontal? index: lenght - 1].tileGameObject =  aux;
-            }
-            else {
-                aux.transform.position = isHorizontal? new Vector3(0, pos.y, pos.z) : new Vector3(pos.x, 0, pos.z);
-                board.tile[isHorizontal? 0: index][isHorizontal? index: 0].tileGameObject =  aux;
-            }
-        }
+    private static void TeleportTile(GameObject aux, Vector3 pos, int lenght){
+        GameObject.Instantiate(aux, new Vector3(pos.x + lenght, pos.y, pos.z), Quaternion.identity);
     }
+
+
     // Start is called before the first frame update
 
     // Update is called once per frame
